@@ -38,3 +38,23 @@ CREATE TABLE tareas (
     FOREIGN KEY (id_departamento) REFERENCES departamentos(id),
     FOREIGN KEY (id_prioridad) REFERENCES prioridades(id)
 );
+
+-- Insertar departamentos
+INSERT INTO departamentos (nombre) VALUES 
+('Finanzas'),
+('Administración'),
+('Informática');
+
+-- Insertar prioridades
+INSERT INTO prioridades (nivel, descripcion) VALUES 
+(1, 'Alta'),
+(2, 'Media'),
+(3, 'Baja');
+
+-- Insertar usuarios (Ejemplo)
+INSERT INTO usuarios (nombre, correo, contraseña, codigo_departamento, role) VALUES 
+('Juan Pérez', 'juan@ejemplo.com', '12345', 1, 'usuario'),
+('María López', 'maria@ejemplo.com', '12345', 2, 'usuario'),
+('Carlos Gómez', 'carlos@ejemplo.com', '12345', 3, 'informatico'),
+('Ana Sánchez', 'ana@ejemplo.com', 'admin123', 1, 'administrador');
+

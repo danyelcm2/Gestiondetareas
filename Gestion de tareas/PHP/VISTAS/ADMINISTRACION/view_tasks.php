@@ -1,3 +1,24 @@
+<?php
+// Iniciar la sesión
+session_start();
+
+// Verificar si el usuario está logueado
+if (!isset($_SESSION['usuario_id'])) {
+    header("Location: login.php"); // Redirigir al login si no está logueado
+    exit();
+}
+
+// Incluir el archivo de conexión a la base de datos
+include('../../conexion.php');
+
+$sql = "SELECT t.id, t.descripcion, d.nombre AS departamento, p.descripcion AS prioridad, t.estado, u.nombre AS usuario_asignado
+        FROM tareas t
+        LEFT JOIN departamentos d ON t.id_departamento = d.id
+        LEFT JOIN prioridades p ON t.id_prioridad = p.id
+        LEFT JOIN usuarios u ON t.id_usuario_asignado = u.id";
+$result = $conn->query($sql);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -43,30 +64,35 @@
                             <th>Departamento</th>
                             <th>Prioridad</th>
                             <th>Estado</th>
+                            <th>Asignado a</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
-                        include('../../conexion.php');
-
-                        $sql = "SELECT t.id, t.descripcion, d.nombre AS departamento, p.descripcion AS prioridad, t.estado
-                                FROM tareas t
-                                JOIN departamentos d ON t.id_departamento = d.id
-                                JOIN prioridades p ON t.id_prioridad = p.id";
-                        $result = $conn->query($sql);
-
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
+                                // Aplicar color según el estado
+                                $estado_class = '';
+                                if ($row['estado'] == 'pendiente') {
+                                    $estado_class = 'table-warning'; // Amarillo claro para "pendiente"
+                                } elseif ($row['estado'] == 'completada') {
+                                    $estado_class = 'table-success'; // Verde claro para "completada"
+                                }
+
+                                // Asignar valor a usuario (Si no tiene asignado, mostrar "Sin Asignar")
+                                $usuario_asignado = $row['usuario_asignado'] ? $row['usuario_asignado'] : "<span class='text-danger'>Sin Asignar</span>";
+
+                                echo "<tr class='$estado_class'>
                                         <td>" . $row['id'] . "</td>
                                         <td>" . $row['descripcion'] . "</td>
                                         <td>" . $row['departamento'] . "</td>
                                         <td>" . $row['prioridad'] . "</td>
                                         <td>" . $row['estado'] . "</td>
+                                        <td>" . $usuario_asignado . "</td>
                                       </tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='5' class='text-center'>No hay tareas solicitadas.</td></tr>";
+                            echo "<tr><td colspan='6' class='text-center'>No hay tareas solicitadas.</td></tr>";
                         }
 
                         $conn->close();

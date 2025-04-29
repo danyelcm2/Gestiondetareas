@@ -35,9 +35,12 @@ CREATE TABLE tareas (
     estado ENUM('pendiente', 'en progreso', 'completada') NOT NULL DEFAULT 'pendiente',
     fecha_solicitud TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_resolucion TIMESTAMP NULL,
+    id_usuario_asignado INT,  -- Nuevo campo para asignar el usuario
     FOREIGN KEY (id_departamento) REFERENCES departamentos(id),
-    FOREIGN KEY (id_prioridad) REFERENCES prioridades(id)
+    FOREIGN KEY (id_prioridad) REFERENCES prioridades(id),
+    FOREIGN KEY (id_usuario_asignado) REFERENCES usuarios(id)  -- Relación con la tabla de usuarios
 );
+
 
 -- Insertar departamentos
 INSERT INTO departamentos (nombre) VALUES 

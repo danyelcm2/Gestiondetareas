@@ -4,7 +4,7 @@ session_start();
 
 // Verificar si el usuario está logueado
 if (!isset($_SESSION['usuario_id'])) {
-    header("Location: login.php"); // Redirigir al login si no está logueado
+    header("Location: ../../../login.php"); // Redirigir al login si no está logueado
     exit();
 }
 
@@ -126,7 +126,7 @@ $prioridades_result = $conn->query($prioridades_sql);
                 <div class="list-group list-group-flush">
                     <a href="informatica_dashboard.php" class="list-group-item list-group-item-action">Tareas Solicitadas</a>
                     <a href="tareas_completadas.php" class="list-group-item list-group-item-action">Tareas Completadas</a>
-                    <a href="../../../../../../login.php" class="list-group-item list-group-item-action">Cerrar Sesión</a>
+                    <a href="../../../login.php" class="list-group-item list-group-item-action">Cerrar Sesión</a>
                 </div>
             </div>
 

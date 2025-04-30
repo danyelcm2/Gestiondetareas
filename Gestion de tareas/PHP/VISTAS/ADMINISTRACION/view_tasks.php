@@ -42,7 +42,7 @@ $result = $conn->query($sql);
                 <a href="create_department.php" class="list-group-item list-group-item-action text-white bg-primary">Crear Departamento</a>
                 <a href="view_tasks.php" class="list-group-item list-group-item-action text-white bg-primary">Ver Tareas</a>
                 <a href="settings.php" class="list-group-item list-group-item-action text-white bg-primary">Ajustes</a>
-                <a href="logout.php" class="list-group-item list-group-item-action text-white bg-primary">Cerrar Sesión</a>
+                <a href="../../../login.php" class="list-group-item list-group-item-action text-white bg-primary">Cerrar Sesión</a>
             </div>
         </div>
 

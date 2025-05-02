@@ -32,17 +32,20 @@ Navegador moderno (Chrome, Firefox, Edge)
 
 📦 Instalación
 1. Clonar el Repositorio
+```
 bash
 git clone https://github.com/tu-usuario/gestion-tareas.git
 cd gestion-tareas
+```
 2. Configurar la Base de Datos
 Importar el esquema SQL:
-
+```
 bash
 mysql -u usuario -p nombre_bd < database/schema.sql
+```
 3. Configurar Variables de Entorno
 Crear un archivo .env basado en .env.example:
-
+```
 ini
 DB_HOST=localhost
 DB_NAME=nombre_bd
@@ -52,7 +55,7 @@ SECRET_KEY=clave_recaptcha
 4. Iniciar el Servidor
 bash
 php -S localhost:8000 -t public/
-
+```
 USUARIO ADMINISTRADOR
 ```
  user: danyelcm2@gmail.com

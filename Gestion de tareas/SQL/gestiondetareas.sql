@@ -56,8 +56,5 @@ INSERT INTO prioridades (nivel, descripcion) VALUES
 
 -- Insertar usuarios (Ejemplo)
 INSERT INTO usuarios (nombre, correo, contraseña, codigo_departamento, role) VALUES 
-('Juan Pérez', 'juan@ejemplo.com', '12345', 1, 'usuario'),
-('María López', 'maria@ejemplo.com', '12345', 2, 'usuario'),
-('Carlos Gómez', 'carlos@ejemplo.com', '12345', 3, 'informatico'),
-('Ana Sánchez', 'ana@ejemplo.com', 'admin123', 1, 'administrador');
+('danyelcm2', 'danyelcm2@gmail.com', '$2y$10$XRBI3KscBvtvCEmNYJYONubonEpN5Fa1bUcSqXA4G4iNIHQPxAlie', '2', 'administrador');
 

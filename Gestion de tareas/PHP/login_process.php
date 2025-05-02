@@ -54,16 +54,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Redirigir según el departamento
             switch ($row['codigo_departamento']) {
                 case 1: // Departamento de Finanzas
-                    header("Location: VISTAS/INFORMATICA/informatica_dashboard.php"); // Página específica para Finanzas
+                    header("Location: VISTAS/USUARIOS/user_dashboard.php"); // Página específica para Finanzas
                     break;
                 case 2: // Departamento de Administración
                     header("Location: VISTAS/ADMINISTRACION/admin_dashboard.php"); // Página específica para Administración
                     break;
                 case 3: // Departamento de Informática
-                    header("Location: VISTAS/USUARIOS/finanzas_dashboard.php"); // Página específica para Informática
+                    header("Location: VISTAS/INFORMATICA/informatica_dashboard.php"); // Página específica para Informática
                     break;
                 default:
-                    header("Location: default_dashboard.php"); // Redirige a una página predeterminada si el departamento no se encuentra
+                    header("Location: VISTAS/USUARIOS/user_dashboard.php"); // Redirige a una página predeterminada si el departamento no se encuentra
                     break;
             }
         } else {

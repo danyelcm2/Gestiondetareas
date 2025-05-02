@@ -53,4 +53,8 @@ SECRET_KEY=clave_recaptcha
 bash
 php -S localhost:8000 -t public/
 
-GitHub Stars
+USUARIO ADMINISTRADOR
+```
+ user: danyelcm2@gmail.com
+contrasena: 123
+```

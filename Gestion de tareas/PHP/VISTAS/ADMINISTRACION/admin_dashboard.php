@@ -89,62 +89,130 @@
 
                     <!-- Vista de Tareas Solicitadas -->
                     <div class="col-md-6">
-                        <h3>Tareas Solicitadas</h3>
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Descripción</th>
-                                    <th>Departamento</th>
-                                    <th>Prioridad</th>
-                                    <th>Estado</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                include('../../conexion.php');
+                <h3>Tareas Solicitadas</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Descripción</th>
+                            <th>Departamento</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Acciones</th> <!-- Nueva columna para botones -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        include('../../conexion.php');
 
-                                $sql = "SELECT t.id, t.descripcion, d.nombre AS departamento, p.descripcion AS prioridad, t.estado
-                                        FROM tareas t
-                                        JOIN departamentos d ON t.id_departamento = d.id
-                                        JOIN prioridades p ON t.id_prioridad = p.id";
-                                $result = $conn->query($sql);
+                        $sql = "SELECT t.id, t.descripcion, d.nombre AS departamento, 
+                                       p.descripcion AS prioridad, t.estado, 
+                                       t.id_departamento, t.id_prioridad
+                                FROM tareas t
+                                JOIN departamentos d ON t.id_departamento = d.id
+                                JOIN prioridades p ON t.id_prioridad = p.id";
+                        $result = $conn->query($sql);
 
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>
-                                                <td>" . $row['id'] . "</td>
-                                                <td>" . $row['descripcion'] . "</td>
-                                                <td>" . $row['departamento'] . "</td>
-                                                <td>" . $row['prioridad'] . "</td>
-                                                <td>" . $row['estado'] . "</td>
-                                              </tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='5' class='text-center'>No hay tareas solicitadas.</td></tr>";
-                                }
-
-                                $conn->close();
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr>
+                                        <td>" . $row['id'] . "</td>
+                                        <td>" . $row['descripcion'] . "</td>
+                                        <td>" . $row['departamento'] . "</td>
+                                        <td>" . $row['prioridad'] . "</td>
+                                        <td>" . $row['estado'] . "</td>
+                                        <td>
+                                            <button class='btn btn-warning btn-sm' 
+                                                    data-bs-toggle='modal' 
+                                                    data-bs-target='#editarModal'
+                                                    onclick=\"cargarDatosEdicion(
+                                                        " . $row['id'] . ",
+                                                        '" . $row['descripcion'] . "',
+                                                        " . $row['id_departamento'] . ",
+                                                        " . $row['id_prioridad'] . ",
+                                                        '" . $row['estado'] . "'
+                                                    )\">Modificar</button>
+                                            <a href='ACCIONES/delete_task.php?id=" . $row['id'] . "' 
+                                               class='btn btn-danger btn-sm'
+                                               onclick=\"return confirm('¿Estás seguro de eliminar esta tarea?')\">Eliminar</a>
+                                        </td>
+                                      </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='6' class='text-center'>No hay tareas solicitadas.</td></tr>";
+                        }
+                        $conn->close();
+                        ?>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS & Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <!-- Modal para Editar Tarea -->
+    <div class="modal fade" id="editarModal" tabindex="-1" aria-labelledby="editarModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarModalLabel">Editar Tarea</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="ACCIONES/update_task_process.php" method="POST">
+                    <div class="modal-body">
+                        <input type="hidden" name="id_tarea" id="id_tarea">
+                        <div class="mb-3">
+                            <label for="descripcion_editar" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="descripcion_editar" name="descripcion" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="departamento_editar" class="form-label">Departamento</label>
+                            <select class="form-control" id="departamento_editar" name="id_departamento" required>
+                                <?php
+                                include('../../conexion.php');
+                                $sql = "SELECT * FROM departamentos";
+                                $result = $conn->query($sql);
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<option value='" . $row['id'] . "'>" . $row['nombre'] . "</option>";
+                                }
+                                $conn->close();
+                                ?>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="prioridad_editar" class="form-label">Prioridad</label>
+                            <select class="form-control" id="prioridad_editar" name="id_prioridad" required>
+                                <option value="1">Baja</option>
+                                <option value="2">Media</option>
+                                <option value="3">Alta</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="estado_editar" class="form-label">Estado</label>
+                            <select class="form-control" id="estado_editar" name="estado" required>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En Progreso">En Progreso</option>
+                                <option value="Completada">Completada</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
+    <!-- Scripts -->
     <script>
-        // Código para alternar la visibilidad del menú lateral
-        var menuToggle = document.getElementById("menu-toggle");
-        var sidebar = document.getElementById("sidebar");
-        menuToggle.addEventListener("click", function() {
-            sidebar.classList.toggle("d-none");
-        });
+        function cargarDatosEdicion(id, descripcion, departamento, prioridad, estado) {
+            document.getElementById('id_tarea').value = id;
+            document.getElementById('descripcion_editar').value = descripcion;
+            document.getElementById('departamento_editar').value = departamento;
+            document.getElementById('prioridad_editar').value = prioridad;
+            document.getElementById('estado_editar').value = estado;
+        }
     </script>
 </body>
 </html>

@@ -2,7 +2,7 @@ README - Sistema de Gestión de Tareas Internas
 Banner del Proyecto
 
 📌 Descripción del Proyecto
-Sistema web interno para la gestión de tareas entre departamentos (Finanzas, Administración e Informática), desarrollado con metodología FDD (Feature Driven Development).
+Sistema web interno para la gestión de tareas entre departamentos (Finanzas, Administración e Informática), desarrollado con metodología JAD.
 
 🚀 Características Principales
 Autenticación segura por roles (usuario, informático, administrador).
